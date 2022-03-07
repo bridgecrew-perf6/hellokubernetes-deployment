@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  labels: 
+    app: paulbouwer
+  name: paulbouwer-deployment
+spec: 
+  replicas: 3
+  selector: 
+    matchLabels: 
+      app: hello-kubernetes
+  template: 
+    metadata: 
+      labels: 
+        app: hello-kubernetes
+    spec: 
+      containers: 
+        - 
+          image: "paulbouwer/hello-kubernetes:1.10"
+          name: hello-kubernetes
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: hellokubernetes-service
+spec: 
+  ports: 
+    - 
+      port: 80
+      targetPort: 8080
+  selector: 
+    app: hello-kubernetes
+--- 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: 
+  name: hello-ingress
+spec: 
+  rules: 
+    - 
+      host: hello.kubernetes.com
+      http: 
+        paths: 
+          - 
+            backend: 
+              service.name: hellokubernetes-service
+              servicePort: 80
+            path: /hello
