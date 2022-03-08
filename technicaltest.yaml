@@ -1,3 +1,4 @@
+--- 
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
@@ -41,8 +42,10 @@ spec:
       host: hello.kubernetes.com
       http: 
         paths: 
-          - 
-            backend: 
-              service.name: hellokubernetes-service
-              servicePort: 80
-            path: /hello
+        - path: /hello 
+          pathType: Prefix
+          backend: 
+            service:
+              name: hellokubernetes-service
+              port:
+                number: 80
